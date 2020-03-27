@@ -49,6 +49,11 @@ export function makeAppFilter(appIdentifier: string): FilterCreator {
       throw new Error('App filter is only available for Android');
     }
 
+    if (!appIdentifier.match(/^[a-z]\w*(\.[a-z]\w*)+$/i))
+    {
+      throw new Error('Invalid App Identifier.')
+    }
+    
     const filter = new AndroidFilter(minPriority);
     filter.setFilterByApp(appIdentifier, adbPath);
     return filter;
