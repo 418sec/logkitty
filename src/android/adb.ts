@@ -50,9 +50,10 @@ export function getApplicationPid(
   adbPath?: string
 ): number {
   let output: Buffer | undefined;
+  if (applicationId.match(/[;&|]/)) throw new CodeError(ERR_ANDROID_CANNOT_GET_APP_PID, ERR_ANDROID_UNPROCESSABLE_PID)
   try {
     output = execSync(
-      `'${getAdbPath(adbPath)}' shell pidof -s ${applicationId}`
+      `'${getAdbPath(adbPath)}' shell pidof -s '${applicationId}'`
     );
   } catch (error) {
     throw new CodeError(
