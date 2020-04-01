@@ -45,6 +45,13 @@ export function spawnLogcatProcess(adbPath: string): ChildProcess {
   }
 }
 
+export function sanitaseAppliactionId (aplicationId:string):string{
+  aplicationId = aplicationId.replace(/\\/g, '\\');
+  aplicationId = aplicationId.replace(/"/g, `\"`);
+  aplicationId = aplicationId.replace(/`/g, '\`');
+  return aplicationId;
+}
+  
 export function getApplicationPid(
   applicationId: string,
   adbPath?: string
@@ -52,7 +59,7 @@ export function getApplicationPid(
   let output: Buffer | undefined;
   try {
     output = execSync(
-      `'${getAdbPath(adbPath)}' shell pidof -s ${applicationId}`
+      `'${getAdbPath(adbPath)}' shell pidof -s "${sanitaseApplicationId(applicationId)}"`
     );
   } catch (error) {
     throw new CodeError(
